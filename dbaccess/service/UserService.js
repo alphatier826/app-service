@@ -25,15 +25,12 @@ exports.UserService = {
     loginValidate: function (reqBody) {
         return new Promise(async (resolve, reject) => {
             try {
-                User.findOne({ email: reqBody.email }, function (err, userDetails) {
+                User.findOne({ email: reqBody.email, password:  reqBody.password }, function (err, userDetails) {
                     if (err) {
                         reject(err);
                     } else if (!userDetails) {
-                        reject({ status: 'FAILED', message: "Invalid email id" });
-                    } else {
-                        if (userDetails.password === reqBody.password) resolve({ status: 'SUCCESS', userDetails });
-                        else reject({ status: 'FAILED', message: "Incorrect password" });
-                    }
+                        reject({ status: 'FAILED', message: "You have entered an invalid email or password" });
+                    } else resolve({ status: 'SUCCESS', userDetails });
                 });
             } catch (error) { reject(error) }
         });
