@@ -5,7 +5,11 @@ exports.UserService = {
         return new Promise(async (resolve, reject) => {
             try {
                 User.find({}, function (err, users) {
-                    resolve(users);
+                    if(err) reject(err);
+                    else {
+                        users.map(user => delete user._doc.password );
+                        resolve(users);
+                    }
                 });
             } catch (error) { reject(error) }
         });
@@ -25,12 +29,15 @@ exports.UserService = {
     loginValidate: function (reqBody) {
         return new Promise(async (resolve, reject) => {
             try {
-                User.findOne({ email: reqBody.email, password:  reqBody.password }, function (err, userDetails) {
+                User.findOne({ email: reqBody.email, password: reqBody.password }, function (err, userDetails) {
                     if (err) {
                         reject(err);
                     } else if (!userDetails) {
                         reject({ status: 'FAILED', message: "You have entered an invalid email or password" });
-                    } else resolve({ status: 'SUCCESS', userDetails });
+                    } else {
+                        delete userDetails._doc.password;
+                        resolve({ status: 'SUCCESS', userDetails });
+                    }
                 });
             } catch (error) { reject(error) }
         });
