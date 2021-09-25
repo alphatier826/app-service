@@ -58,10 +58,10 @@ app.use("/serviceEngine/users", UserController.init(express));
 
 var inititateServer = function () {
 	var httpOrHttps = httpOrHttps = _http.Server(app);
-	var server = httpOrHttps.listen(process.env.PORT || 5000);
+	var server = httpOrHttps.listen(process.env.PORT || 3000);
 	server.timeout = Number(process.env.SERVER_TIMEOUT || 600000); //MilliSeconds. Default=10 Minutes 
 	console.log("Server Timeout : " + server.timeout);
-	console.log("Server running in port : " + (process.env.PORT || 5000));
+	console.log("Server running in port : " + (process.env.PORT || 3000));
 	console.error("********* Application Started Successfully with HTTP");
 };
 
